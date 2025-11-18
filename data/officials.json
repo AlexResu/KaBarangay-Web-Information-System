@@ -1,0 +1,124 @@
+{
+  "officials": [
+    {
+      "name": "Juan Dela Cruz",
+      "position": "Barangay Captain",
+      "contact_number": "0917-123-4567",
+      "email": "juan@brgy.com",
+      "location": "Barangay Hall",
+      "key_responsibility": [
+        "Oversee all barangay operations and services",
+        "Lead barangay council meetings",
+        "Implement local ordinances and programs"
+      ]
+    },
+    {
+      "name": "Maria Santos",
+      "position": "Secretary",
+      "contact_number": "0918-987-6543",
+      "email": "maria@brgy.com",
+      "location": "Barangay Hall",
+      "key_responsibility": [
+        "Maintain barangay records and official documents",
+        "Prepare meeting minutes and resolutions",
+        "Assist in administrative communication and reporting"
+      ]
+    },
+    {
+      "name": "Pedro Reyes",
+      "position": "Treasurer",
+      "contact_number": "0919-555-1234",
+      "email": "pedro@brgy.com",
+      "location": "Barangay Hall",
+      "key_responsibility": [
+        "Manage barangay funds and financial records",
+        "Oversee disbursement and budget allocations",
+        "Prepare financial reports for auditing"
+      ]
+    },
+    {
+      "name": "Ana Lopez",
+      "position": "Kagawad",
+      "contact_number": "0917-777-8888",
+      "email": "ana@brgy.com",
+      "location": "Barangay Hall",
+      "key_responsibility": [
+        "Support community peace and order programs",
+        "Assist in health and sanitation initiatives",
+        "Coordinate youth and livelihood programs"
+      ]
+    },
+    {
+      "name": "Maria Cruz",
+      "position": "Kagawad - Health & Sanitation",
+      "contact_number": "+63 917 234 5678",
+      "email": "maria.cruz@labuin.pila.laguna.gov.ph",
+      "location": "Labuin Health Center, Pila, Laguna",
+      "key_responsibility": [
+        "Health programs",
+        "Sanitation monitoring",
+        "Medical assistance"
+      ]
+    },
+    {
+      "name": "Pedro Reyes",
+      "position": "Kagawad - Peace & Order",
+      "contact_number": "+63 917 345 6789",
+      "email": "pedro.reyes@labuin.pila.laguna.gov.ph",
+      "location": "Barangay Security Office, Labuin",
+      "key_responsibility": [
+        "Peace and order",
+        "Security coordination",
+        "Emergency response"
+      ]
+    },
+    {
+      "name": "Ana Flores",
+      "position": "Kagawad - Education & Youth",
+      "contact_number": "+63 917 456 7890",
+      "email": "ana.flores@labuin.pila.laguna.gov.ph",
+      "location": "Labuin Youth Center, Pila, Laguna",
+      "key_responsibility": [
+        "Education programs",
+        "Youth development",
+        "Sports activities"
+      ]
+    },
+    {
+      "name": "Roberto Garcia",
+      "position": "Kagawad - Infrastructure",
+      "contact_number": "+63 917 567 8901",
+      "email": "roberto.garcia@labuin.pila.laguna.gov.ph",
+      "location": "Public Works Office, Labuin",
+      "key_responsibility": [
+        "Infrastructure development",
+        "Public works",
+        "Utilities management"
+      ]
+    },
+    {
+      "name": "Luz Mendez",
+      "position": "Kagawad - Social Services",
+      "contact_number": "+63 917 678 9012",
+      "email": "luz.mendez@labuin.pila.laguna.gov.ph",
+      "location": "Social Services Office, Labuin",
+      "key_responsibility": [
+        "Social welfare programs",
+        "Senior citizen affairs",
+        "Family assistance"
+      ]
+    },
+    {
+      "name": "Carlos Torres",
+      "position": "Kagawad - Environment",
+      "contact_number": "+63 917 789 0123",
+      "email": "carlos.torres@labuin.pila.laguna.gov.ph",
+      "location": "Environmental Office, Labuin",
+      "key_responsibility": [
+        "Environmental protection",
+        "Waste management",
+        "Tree planting programs"
+      ]
+    }
+  ]
+}

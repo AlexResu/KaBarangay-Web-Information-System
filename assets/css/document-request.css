@@ -5,9 +5,9 @@
 }
 
 .document-request__container {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 1rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .document-request__form {
@@ -15,7 +15,7 @@
   backdrop-filter: blur(20px);
   border-radius: 1rem;
   padding: 2rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -82,9 +82,8 @@
 }
 
 .document-request__info-item {
-  text-align: center;
-  padding: 1rem;
-  background: rgba(59, 130, 246, 0.05);
+  padding: 2.5rem;
+  background-color: rgba(124, 190, 248, 0.5);
   border-radius: 0.75rem;
   border: 1px solid rgba(59, 130, 246, 0.1);
 }
@@ -123,50 +122,58 @@
 }
 
 .container {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 1rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
 /* Section headers */
 .document-request__header {
-    text-align: center;
-    margin-bottom: 3rem;
+  text-align: center;
+  margin-bottom: 3rem;
 }
 
 .document-request__title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }
 
 .title-icon {
-    width: 3.5rem;
-    height: 3.5rem;
-    background: #3b82f6;
-    border-radius: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
+  width: 3.5rem;
+  height: 3.5rem;
+  background: #3b82f6;
+  border-radius: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
 }
 
 .document-request__header h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    margin: 0;
-    color: var(--primary);
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 650;
+  padding-top: 1.5em;
+  text-align: center;
+  color: var(--dark);
+  font-size: 2rem;
 }
 
 .document-request__header h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
 }
 
 .document-request__description {
-    font-size: 1.25rem;
-    max-width: 64rem;
-    margin: 0 auto;
+  font-size: 1rem;
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+.input-error {
+  border: 2px solid #dc3545;
+  background-color: #fff5f5;
 }

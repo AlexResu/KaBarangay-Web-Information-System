@@ -1,82 +1,109 @@
-// document.addEventListener("DOMContentLoaded", function () {
-//   const navLinks = document.querySelectorAll(".nav__link");
-//   const mobileMenuBtn = document.getElementById("mobileMenuBtn");
-//   const navMenu = document.getElementById("navMenu");
-//   const faqItems = document.querySelectorAll(".faq-item");
+// =============================================================
+// header.js
+// -------------------------------------------------------------
+// This module dynamically loads the header HTML into the page,
+// highlights the active navigation link, and manages accessibility
+// for mobile navigation and the staff login modal.
+//
+// Used across all public pages of the KaBarangay website.
+// =============================================================
+export const initHeader = async () => {
+  const base = window.location.pathname.includes("kabarangay-website")
+    ? "/kabarangay-website"
+    : "";
 
-//   // --- Highlight active link based on current URL ---
-//   let currentPage = window.location.pathname.split("/").pop().split(".")[0]; 
-//   console.log(currentPage)
-//   // e.g. "services" for services.html, "track-request" for track-request.html
+  try {
+    // =============================================================
+    // Load the header partial (HTML fragment)
+    // -------------------------------------------------------------
+    // This fetches the shared header from /partials/layout/header.html
+    // and injects it into the #header-container element.
+    // =============================================================
+    const res = await fetch(`${base}/partials/layout/header.html`);
+    const data = await res.text();
+    document.getElementById("header-container").innerHTML = data;
 
-//   // If we're on index.html, also check for hash (#home, #faq, etc.)
-//   if (currentPage === "index") {
-//     if (window.location.hash) {
-//       currentPage = window.location.hash.substring(1); // remove #
-//     } else {
-//       currentPage = "home"; // default section
-//     }
-//   }
+    // ===== Highlight Current Page =====
+    const navLinks = document.querySelectorAll(".nav__link");
+    let currentPage = window.location.pathname.split("/").pop().split(".")[0];
 
-//   console.log(navLinks)
-//   // Remove any old "active" and apply to the matching link
-//   navLinks.forEach((link) => {
-//     console.log(link.getAttribute("data-page"))
-//     link.classList.remove("active", "nav__link--active");
-//     if (link.getAttribute("data-page") === currentPage) {
-//       link.classList.add("active", "nav__link--active");
-//     }
-//   });
+    // Handle homepage detection (e.g., index.html or #home)
+    if (currentPage === "index") {
+      currentPage = window.location.hash
+        ? window.location.hash.substring(1)
+        : "home";
+    }
 
-//   // --- Mobile menu toggle ---
-//   if (mobileMenuBtn) {
-//     mobileMenuBtn.addEventListener("click", function () {
-//       navMenu.classList.toggle("active");
-//     });
-//   }
+    // Loop through navigation links and apply active class
+    navLinks.forEach((link) => {
+      link.classList.toggle(
+        "nav__link--active",
+        link.dataset.page === currentPage
+      );
+      link.classList.toggle("active", link.dataset.page === currentPage);
+    });
 
-//   // --- FAQ toggle ---
-//   faqItems.forEach((item) => {
-//     const question = item.querySelector(".faq-question");
-//     if (question) {
-//       question.addEventListener("click", () => {
-//         item.classList.toggle("active");
-//       });
-//     }
-//   });
-// });
+    // ===== Mobile Menu Toggle (ARIA) =====
+    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+    const navMenu = document.getElementById("navMenu");
 
-// main.js
-document.addEventListener("DOMContentLoaded", function () {
-  fetch("../../partials/header.html")
-    .then((res) => res.text())
-    .then((data) => {
-      document.getElementById("header-container").innerHTML = data;
+    if (mobileMenuBtn && navMenu) {
+      mobileMenuBtn.setAttribute("aria-expanded", "false");
+      navMenu.setAttribute("aria-hidden", "true");
 
-      // Now header exists → query nav links
-      const navLinks = document.querySelectorAll(".nav__link");
-      console.log("Found navLinks:", navLinks);
+      mobileMenuBtn.addEventListener("click", () => {
+        const expanded = mobileMenuBtn.getAttribute("aria-expanded") === "true";
 
-      // Highlight current page
-      let currentPage = window.location.pathname.split("/").pop().split(".")[0];
-      if (currentPage === "index") {
-        currentPage = window.location.hash ? window.location.hash.substring(1) : "home";
-      }
-
-      navLinks.forEach((link) => {
-        link.classList.remove("active", "nav__link--active");
-        if (link.getAttribute("data-page") === currentPage) {
-          link.classList.add("active", "nav__link--active");
-        }
+        mobileMenuBtn.setAttribute("aria-expanded", String(!expanded));
+        navMenu.setAttribute("aria-hidden", String(expanded));
+        navMenu.classList.toggle("active");
       });
 
-      // Mobile menu toggle
-      const mobileMenuBtn = document.getElementById("mobileMenuBtn");
-      const navMenu = document.getElementById("navMenu");
-      if (mobileMenuBtn) {
-        mobileMenuBtn.addEventListener("click", () => {
-          navMenu.classList.toggle("active");
-        });
-      }
-    });
-});
+      // Optional: Allow closing with Escape key
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && navMenu.classList.contains("active")) {
+          navMenu.classList.remove("active");
+          mobileMenuBtn.setAttribute("aria-expanded", "false");
+          navMenu.setAttribute("aria-hidden", "true");
+        }
+      });
+    }
+
+    // ===== Staff Login Modal (ARIA) =====
+    const staffLoginBtn = document.getElementById("staffLoginBtn");
+    const loginModal = document.getElementById("loginModal");
+    const closeModal = document.getElementById("closeModal");
+
+    if (staffLoginBtn && loginModal && closeModal) {
+      loginModal.setAttribute("aria-hidden", "true");
+
+      staffLoginBtn.addEventListener("click", () => {
+        loginModal.setAttribute("aria-hidden", "false");
+        loginModal.focus();
+      });
+
+      closeModal.addEventListener("click", () => {
+        loginModal.setAttribute("aria-hidden", "true");
+        staffLoginBtn.focus();
+      });
+
+      // Close modal with Escape key
+      document.addEventListener("keydown", (e) => {
+        if (
+          e.key === "Escape" &&
+          loginModal.getAttribute("aria-hidden") === "false"
+        ) {
+          loginModal.setAttribute("aria-hidden", "true");
+          staffLoginBtn.focus();
+        }
+      });
+    }
+  } catch (error) {
+    // =============================================================
+    // Error Handling
+    // -------------------------------------------------------------
+    // Displays an error message in the console if header loading fails.
+    // =============================================================
+    console.error("Error loading header:", error);
+  }
+};

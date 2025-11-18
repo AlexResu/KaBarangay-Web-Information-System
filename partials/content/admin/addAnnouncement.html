@@ -1,0 +1,69 @@
+<section
+  class="form-container"
+  id="add-announcement"
+  role="region"
+  aria-labelledby="add-announcement-title"
+>
+  <h3 id="add-announcement-title">➕ Add New Announcement</h3>
+
+  <form
+    id="add-announcement-form"
+    role="form"
+    aria-describedby="form-instructions"
+  >
+    <p id="form-instructions" class="sr-only">
+      Fill out the title, content, and priority fields to add a new
+      announcement.
+    </p>
+
+    <div class="form-group">
+      <label for="title">Title <span aria-hidden="true">*</span></label>
+      <input
+        type="text"
+        id="title"
+        name="title"
+        placeholder="Announcement title"
+        required
+        autocomplete="off"
+        aria-required="true"
+        aria-label="Announcement title"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="content">Content <span aria-hidden="true">*</span></label>
+      <textarea
+        id="content"
+        name="content"
+        placeholder="Announcement content"
+        required
+        aria-required="true"
+        aria-label="Announcement content"
+      ></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="priority">Priority</label>
+        <select
+          id="priority"
+          name="priority"
+          aria-label="Announcement priority level"
+        >
+          <option value="low">Low</option>
+          <option value="medium" selected>Medium</option>
+          <option value="high">High</option>
+        </select>
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="add-btn"
+      id="add-btn"
+      aria-label="Add new announcement"
+    >
+      + Add
+    </button>
+  </form>
+</section>

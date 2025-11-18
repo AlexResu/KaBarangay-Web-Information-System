@@ -1,0 +1,118 @@
+<section
+  class="form-container"
+  id="add-official-section"
+  role="region"
+  aria-labelledby="add-official-title"
+>
+  <h3 id="add-official-title">➕ Add New Barangay Official</h3>
+
+  <form
+    id="add-official-form"
+    role="form"
+    aria-describedby="official-form-instructions"
+  >
+    <p id="official-form-instructions" class="sr-only">
+      Fill out the official's personal information, position, and
+      responsibilities. All fields are required.
+    </p>
+
+    <div class="form-group">
+      <label for="full_name">Full Name <span aria-hidden="true">*</span></label>
+      <input
+        type="text"
+        id="full_name"
+        name="full_name"
+        placeholder="e.g. Juan Dela Cruz"
+        required
+        autocomplete="off"
+        aria-required="true"
+        aria-label="Full name of barangay official"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="position">Position <span aria-hidden="true">*</span></label>
+      <input
+        type="text"
+        id="position"
+        name="position"
+        placeholder="e.g. Kagawad - Health & Sanitation"
+        required
+        autocomplete="off"
+        aria-required="true"
+        aria-label="Barangay official position"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="contact_number"
+        >Contact Number <span aria-hidden="true">*</span></label
+      >
+      <input
+        type="tel"
+        id="contact_number"
+        name="contact_number"
+        placeholder="e.g. +63 917 123 4567"
+        required
+        autocomplete="off"
+        aria-required="true"
+        aria-label="Barangay official contact number"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email Address <span aria-hidden="true">*</span></label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="e.g. juan@brgy.com"
+        required
+        autocomplete="off"
+        aria-required="true"
+        aria-label="Barangay official email address"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="office_address"
+        >Office Address <span aria-hidden="true">*</span></label
+      >
+      <input
+        type="text"
+        id="office_address"
+        name="office_address"
+        placeholder="e.g. Barangay Hall, Labuin, Pila, Laguna"
+        required
+        autocomplete="off"
+        aria-required="true"
+        aria-label="Office address of barangay official"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="responsibilities"
+        >Key Responsibilities <span aria-hidden="true">*</span></label
+      >
+      <input
+        type="text"
+        id="responsibilities"
+        name="responsibilities"
+        placeholder="e.g. Health programs, Sanitation monitoring, Medical assistance"
+        required
+        autocomplete="off"
+        aria-required="true"
+        aria-label="Barangay official key responsibilities"
+      />
+    </div>
+
+    <button
+      type="submit"
+      class="add-btn"
+      id="add-official-btn"
+      aria-label="Add new barangay official"
+    >
+      + Add
+    </button>
+  </form>
+</section>

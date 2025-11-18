@@ -1,0 +1,46 @@
+{
+  "data": [
+    {
+      "title": "Community Clean-Up Drive",
+      "priority": "high",
+      "date": "October 1, 2025",
+      "is_hidden": false,
+      "description": "Join us for a barangay-wide clean-up. Meet at the barangay hall at 7 AM. Gloves and garbage bags will be provided."
+    },
+    {
+      "title": "Barangay Meeting",
+      "priority": "medium",
+      "date": "October 5, 2025",
+      "is_hidden": false,
+      "description": "Monthly meeting to discuss community projects. Open to all residents. Agenda includes budget planning and community projects."
+    },
+    {
+      "title": "Road Maintenance",
+      "priority": "medium",
+      "date": "October 10, 2025",
+      "is_hidden": true,
+      "description": "Temporary road closure on Main St for repairs. Plan alternate routes. Expected to be completed within 3 days."
+    },
+    {
+      "title": "Community Health Program",
+      "priority": "high",
+      "date": "September 10, 2025",
+      "is_hidden": false,
+      "description": "Free medical check-up and vaccination program will be held on September 15, 2025 at the Barangay Health Center."
+    },
+    {
+      "title": "Basketball Tournament Registration",
+      "priority": "medium",
+      "date": "September 7, 2025",
+      "is_hidden": false,
+      "description": "Registration for the annual inter-sitio basketball tournament is now open until September 20, 2025."
+    },
+    {
+      "title": "Garbage Collection Schedule Update",
+      "priority": "low",
+      "date": "September 6, 2025",
+      "is_hidden": false,
+      "description": "Starting September 10, 2025, garbage collection will be every Tuesday and Friday at 6:00 AM."
+    }
+  ]
+}

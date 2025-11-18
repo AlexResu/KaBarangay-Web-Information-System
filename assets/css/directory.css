@@ -1,0 +1,26 @@
+.directory-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 30px 0;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.directory-table th,
+.directory-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.directory-table th {
+  background-color: var(--primary);
+  color: white;
+  font-weight: 600;
+}
+
+.directory-table tr:last-child td {
+  border-bottom: none;
+}

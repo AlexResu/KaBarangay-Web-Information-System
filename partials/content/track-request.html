@@ -1,0 +1,89 @@
+<!-- Track Request Section -->
+<main>
+  <section id="track" class="track section">
+    <div class="track__container container">
+      <header class="track__header section__header">
+        <div class="track__title">
+          <span class="track__icon" aria-hidden="true">
+            <!-- search icon -->
+          </span>
+          <h1 class="track__heading">Track Your Request</h1>
+        </div>
+        <p class="track__description">
+          Monitor the status of your document requests in real-time. Enter your
+          request number or email to get updates.
+        </p>
+      </header>
+
+      <!-- Search Section -->
+      <section class="track__search search">
+        <article class="search__card">
+          <h2 class="search__title">Search Your Request</h2>
+
+          <form class="search__form" role="search" id="searchForm">
+            <div class="search__group">
+              <label for="trackSearch" class="search__label"
+                >Request Number or Email Address</label
+              >
+              <div class="search__input-wrapper">
+                <input
+                  type="text"
+                  id="trackSearch"
+                  class="search__input"
+                  placeholder="e.g., BL2025-001, Juan Dela Cruz, or juan@email.com"
+                />
+                <button class="search__button btn" type="submit">
+                  <span>Search</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Quick Search -->
+            <aside class="search__quick">
+              <h3 class="search__quick-title">
+                Quick Search (Sample Requests):
+              </h3>
+              <div class="search__quick-buttons">
+                <button type="button" class="search__quick-btn">
+                  BL2025-001
+                </button>
+                <button type="button" class="search__quick-btn">
+                  BL2025-002
+                </button>
+                <button type="button" class="search__quick-btn">
+                  BL2025-003
+                </button>
+              </div>
+            </aside>
+          </form>
+        </article>
+      </section>
+
+      <!-- Request Details -->
+      <section class="track__details details" id="detailsSection" hidden>
+        <!-- Pickup Information -->
+      </section>
+      <article class="details__card pickup">
+        <h2 class="pickup__title">Pickup Information</h2>
+        <div class="pickup__grid">
+          <div class="pickup__item">
+            <h3>Office Hours</h3>
+            <p>Monday - Friday: 8:00 AM - 5:00 PM</p>
+            <p>Saturday: 8:00 AM - 12:00 PM</p>
+            <p>Sunday: Closed</p>
+          </div>
+          <div class="pickup__item">
+            <h3>Location & Contact</h3>
+            <p>Barangay Labuin Hall</p>
+            <p>Pila, Laguna 4002</p>
+            <p>Tel: (049) 557-3456</p>
+          </div>
+        </div>
+        <p class="pickup__reminder">
+          <strong>Reminder:</strong> Please bring a valid ID when picking up
+          your documents.
+        </p>
+      </article>
+    </div>
+  </section>
+</main>

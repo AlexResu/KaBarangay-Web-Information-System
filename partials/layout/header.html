@@ -1,0 +1,202 @@
+<!-- ==============================================================
+  HEADER COMPONENT
+  ---------------------------------------------------------------
+  This header serves as the main navigation bar of the KaBarangay website.
+  It includes the logo, navigation menu, and a staff login button.
+  The design uses Bootstrap classes for responsive layout and accessibility.
+================================================================= -->
+
+<header
+  class="header sticky-top"
+  id="header-container"
+  role="banner"
+  aria-label="Main site header"
+>
+  <div class="container header__container">
+    <div
+      class="header__content d-flex justify-content-between align-items-center py-3"
+    >
+      <!-- ==========================
+        LOGO SECTION
+        Contains the KaBarangay logo icon and text label.
+        The d-flex class ensures proper alignment between the icon and text.
+      =========================== -->
+      <div
+        class="header__logo d-flex align-items-center"
+        role="img"
+        aria-label="KaBarangay logo"
+      >
+        <i
+          class="header__logo-icon fas fa-building"
+          aria-label="KaBarangay Logo"
+        ></i>
+        <span class="header__logo-text ml-2">KaBarangay</span>
+      </div>
+
+      <!-- ==========================
+        MOBILE MENU BUTTON
+        Appears on smaller screens.
+        Toggles the visibility of the navigation menu.
+        Uses Bootstrap utility classes for responsive behavior.
+      =========================== -->
+      <button
+        class="header__menu-btn"
+        id="mobileMenuBtn"
+        aria-label="Open navigation menu"
+        aria-controls="navMenu"
+        aria-expanded="false"
+      >
+        <i class="fas fa-bars" aria-hidden="true"></i>
+      </button>
+
+      <!-- ==========================
+        MAIN NAVIGATION
+        Contains the site’s main navigation links.
+        Uses Bootstrap’s list-unstyled and mb-0 to remove default styles.
+        The `data-page` attribute helps track the active page dynamically.
+      =========================== -->
+      <nav
+        class="nav"
+        id="navMenu"
+        role="navigation"
+        aria-label="Main navigation"
+      >
+        <ul class="nav__list list-unstyled mb-0">
+          <li class="nav__item">
+            <a href="index.html" class="nav__link" data-page="home">Home</a>
+          </li>
+          <li class="nav__item">
+            <a href="services.html" class="nav__link" data-page="services"
+              >Services</a
+            >
+          </li>
+          <li class="nav__item">
+            <a
+              href="announcements.html"
+              class="nav__link"
+              data-page="announcements"
+              >Announcements</a
+            >
+          </li>
+          <li class="nav__item">
+            <a href="directory.html" class="nav__link" data-page="directory"
+              >Directory</a
+            >
+          </li>
+          <li class="nav__item">
+            <a
+              href="track-request.html"
+              class="nav__link"
+              data-page="track-request"
+              >Track Request</a
+            >
+          </li>
+          <li class="nav__item">
+            <a href="contact.html" class="nav__link" data-page="contact"
+              >Contact</a
+            >
+          </li>
+          <li class="nav__item">
+            <a href="faq.html" class="nav__link" data-page="faq">FAQ</a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- ==========================
+        STAFF LOGIN BUTTON
+        Opens the staff login modal dialog.
+        Styled using Bootstrap’s btn and btn-primary classes.
+      =========================== -->
+      <button
+        class="staff-login-btn btn btn-primary d-flex"
+        id="staffLoginBtn"
+        aria-label="Open staff login modal"
+        aria-haspopup="dialog"
+        aria-controls="loginModal"
+      >
+        <i class="fas fa-user-lock" aria-hidden="true"></i>
+        <span>Staff Login</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ==============================================================
+  LOGIN MODAL COMPONENT
+  ---------------------------------------------------------------
+  Displays a modal dialog for staff login.
+  Uses Bootstrap’s modal structure and accessibility attributes.
+================================================================= -->
+<div
+  class="modal fade"
+  id="loginModal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="staffLoginTitle"
+  aria-describedby="staffLoginDesc"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content modal__content modal-box p-4">
+      <!-- Close button -->
+      <button
+        type="button"
+        class="close modal__close"
+        aria-label="Close login dialog"
+        id="closeModal"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+
+      <!-- Modal Header -->
+      <h2 id="staffLoginTitle" class="h5 mb-2">Staff Login</h2>
+
+      <!-- Screen-reader description for accessibility -->
+      <p id="staffLoginDesc" class="sr-only">
+        Please enter your username and password to access the staff portal.
+      </p>
+
+      <!-- ==========================
+        LOGIN FORM
+        Includes username and password fields with validation.
+        Uses Bootstrap form-group and form-control classes for styling.
+      =========================== -->
+      <form id="loginFormModal" aria-describedby="staffLoginDesc">
+        <div class="form-group">
+          <label for="modalUsername">Username</label>
+          <input
+            type="text"
+            id="modalUsername"
+            name="username"
+            class="form-control"
+            placeholder="Enter username"
+            required
+            aria-required="true"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="modalPassword">Password</label>
+          <input
+            type="password"
+            id="modalPassword"
+            name="password"
+            class="form-control"
+            placeholder="Enter password"
+            required
+            aria-required="true"
+          />
+        </div>
+
+        <!-- Submit button -->
+        <button
+          type="submit"
+          class="btn btn-primary btn-block justify-content-center mt-3"
+          aria-label="Submit login form"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

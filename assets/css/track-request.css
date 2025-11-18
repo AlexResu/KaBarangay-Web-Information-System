@@ -1,8 +1,4 @@
-/* =========================
-   TRACK SECTION
-========================= */
 .track {
-  padding: 4rem 1rem;
   background: #f9fafb;
 }
 
@@ -29,9 +25,11 @@
 }
 
 .track__heading {
-  font-size: 1.75rem;
   font-weight: 700;
-  color: #1f2937;
+  text-align: center;
+  color: var(--dark);
+  font-size: 2rem;
+  padding-top: 1.5em;
 }
 
 .track__description {
@@ -41,15 +39,12 @@
   color: #4b5563;
 }
 
-/* =========================
-   SEARCH CARD
-========================= */
 .search__card {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   border-radius: 1rem;
   padding: 2rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.2);
   max-width: 48rem;
   margin: 0 auto 3rem;
@@ -94,7 +89,7 @@
 .search__input:focus {
   outline: none;
   border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
   background: white;
 }
 
@@ -168,7 +163,7 @@
   background: white;
   border-radius: 1rem;
   padding: 1.5rem 2rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Request Card */
@@ -292,9 +287,56 @@
   color: #6b7280;
 }
 
+.timeline__list {
+  counter-reset: step;
+  list-style: none; /* remove default browser numbering */
+  padding-left: 2rem;
+  position: relative;
+}
+
+.timeline__item {
+  position: relative;
+  padding-left: 2.5rem; /* space for number + circle */
+  counter-increment: step;
+}
+
+/* Number + circle wrapper */
+.timeline__item::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  background: #d1d5db;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timeline__item--completed::before {
+  background: #7104fffb;
+}
+
+.timeline__item--current::before {
+  background: #ffd904fb;
+}
+
+.timeline__item--submitted::before {
+  background: #2746f3;
+}
+
 /* =========================
    PICKUP INFO
 ========================= */
+.pickup {
+  margin-top: 1.5rem;
+}
+
 .pickup__title {
   font-size: 1.25rem;
   font-weight: 700;
