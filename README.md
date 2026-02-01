@@ -1,4 +1,4 @@
-# Kabarangay Website
+# Kabarangay Web Information System
 
 A static website providing barangay-level services and community information. Residents can view announcements, access a directory of local officials, submit service requests, and track requests.
 
