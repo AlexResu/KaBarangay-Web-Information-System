@@ -22,16 +22,21 @@
         The d-flex class ensures proper alignment between the icon and text.
       =========================== -->
       <div
-        class="header__logo d-flex align-items-center"
-        role="img"
-        aria-label="KaBarangay logo"
-      >
-        <i
-          class="header__logo-icon fas fa-building"
-          aria-label="KaBarangay Logo"
-        ></i>
-        <span class="header__logo-text ml-2">KaBarangay</span>
-      </div>
+  class="header__logo d-flex align-items-center"
+  role="img"
+  aria-label="KaBarangay logo"
+>
+  <img
+  src="assets/img/KaBarangay-logo.png"
+  alt="KaBarangay Logo"
+  class="header__logo-img"
+/>
+
+  <div class="header__logo-text-container ml-2 d-flex flex-column">
+    <span class="header__logo-text">KaBarangay</span>
+    <small class="text-muted">Web Information System</small>
+  </div>
+</div>
 
       <!-- ==========================
         MOBILE MENU BUTTON

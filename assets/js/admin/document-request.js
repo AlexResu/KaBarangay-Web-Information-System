@@ -20,25 +20,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   const cardContainer = document.getElementById("cardContainer");
   let requestData = null;
 
-  // Fetch JSON data
-  const storedData = sessionStorage.getItem("documents");
-  if (!storedData) {
-    fetch(`${base}/data/document-request.json`)
-      .then((response) => response.json())
-      .then((data) => {
-        requestData = data;
-        renderCards(requestData.documents);
-      })
-      .catch((err) => {
-        console.error("Failed to load request.json:", err);
-        cardContainer.innerHTML =
-          "<p class='text-danger'>Error loading request data.</p>";
-      });
-  } else {
-    // Use cached data if available
-    requestData = JSON.parse(storedData);
-    renderCards(requestData);
-  }
+  // Fetch data from api
+  fetch(`http://localhost:3000/api/document-requests`)
+    .then((response) => response.json())
+    .then((data) => {
+      requestData = data;
+      renderCards(requestData);
+    })
+    .catch((err) => {
+      console.error("Failed to load document requests from API:", err);
+      cardContainer.innerHTML =
+        "<p class='text-danger'>Error loading request data.</p>";
+    });
 
   /**
    * Helper function: Get progress bar details based on status
@@ -50,10 +43,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         return { value: 25, label: "Pending", class: "bg-secondary" };
       case "Processing":
         return { value: 50, label: "Processing", class: "bg-info" };
-      case "Completed":
-        return { value: 100, label: "Completed", class: "bg-success" };
-      case "Cancelled":
-        return { value: 100, label: "Cancelled", class: "bg-danger" };
+      case "Ready for Pickup":
+        return { value: 75, label: "Ready for Pickup", class: "bg-info" };
+      case "Picked-up":
+        return { value: 100, label: "Picked-up", class: "bg-success" };
       default:
         return { value: 0, label: "Unknown", class: "bg-dark" };
     }
@@ -66,50 +59,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   function updateTimeline(status, timeline) {
     const today = new Date().toISOString().split("T")[0];
 
-    // Case 1: Completed – mark all steps as completed
-    if (status === "Completed") {
-      return timeline.map((step) => ({
-        ...step,
-        status: "Completed",
-        date: step.date || today,
-      }));
-    }
-
-    // Case 2: Cancelled – mark the first unfinished step as cancelled
-    if (status === "Cancelled") {
-      let updated = false;
-      return timeline.map((step) => {
-        if (!updated && step.status !== "Completed") {
-          updated = true;
-          return {
-            ...step,
-            status: "Cancelled",
-            date: today,
-          };
-        }
-        return step;
-      });
-    }
-
-    // Case 3: Processing – mark next pending step as "In Progress"
-    if (status === "Processing") {
-      let updated = false;
-      return timeline.map((step) => {
-        if (step.status === "Completed") return step;
-        if (!updated) {
-          updated = true;
-          return {
-            ...step,
-            status: "In Progress",
-            date: step.date || today,
-          };
-        }
-        return { ...step, status: "Pending" };
-      });
-    }
-
-    // Case 4: Pending – leave the timeline as is
-    return timeline;
+    const newTimeline = [...timeline, { step: status, date: new Date(), status: "Completed" }];
+    return newTimeline;
   }
 
   /**
@@ -133,7 +84,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           <span><strong>Request ID:</strong> ${doc.request_id}</span>
           <div>
             <label for="statusSelect-${index}" class="mr-2 mb-0"><strong>Status:</strong></label>
-            <select class="custom-select" id="statusSelect-${index}" style="width: auto; display: inline-block;">
+            <select class="custom-select" ${doc.status === "Picked-up" ? "disabled" : ""} id="statusSelect-${index}" style="width: auto; display: inline-block;">
               <option ${
                 doc.status === "Pending" ? "selected" : ""
               }>Pending</option>
@@ -141,11 +92,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 doc.status === "Processing" ? "selected" : ""
               }>Processing</option>
               <option ${
-                doc.status === "Completed" ? "selected" : ""
-              }>Completed</option>
+                doc.status === "Ready for Pickup" ? "selected" : ""
+              }>Ready for Pickup</option>
               <option ${
-                doc.status === "Cancelled" ? "selected" : ""
-              }>Cancelled</option>
+                doc.status === "Picked-up" ? "selected" : ""
+              }>Picked-up</option>
             </select>
           </div>
         </div>
@@ -192,6 +143,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         const newStatus = e.target.value;
         doc.status = newStatus;
 
+        if (newStatus === "Picked-up") {
+          statusSelect.disabled = true;
+        }
+
         // Update timeline
         doc.timeline = updateTimeline(newStatus, doc.timeline);
 
@@ -200,6 +155,29 @@ document.addEventListener("DOMContentLoaded", async () => {
         progressBar.style.width = `${progress.value}%`;
         progressBar.className = `progress-bar ${progress.class}`;
         progressBar.textContent = progress.label;
+
+        // Log changes (in real app, would send update to backend)
+        fetch(`http://localhost:3000/api/document-requests/${doc._id}/status`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            status: doc.status
+          })
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Failed to update document request");
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log("Document request updated:", data);
+        })
+        .catch(error => {
+          console.error("Error updating document request:", error);
+        });
 
         console.log(`Status for ${doc.request_id} changed to:`, newStatus);
         console.log("Updated timeline:", doc.timeline);

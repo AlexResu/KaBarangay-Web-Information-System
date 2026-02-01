@@ -90,18 +90,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // Helper function to generate request ID like BL2025-001, BL2025-002...
-    function generateRequestId() {
-      const year = new Date().getFullYear();
-      const prefix = "BL" + year;
-      // Find max number used so far
-      let maxNumber = 0;
-      documents.forEach((req) => {
-        if (req.request_id && req.request_id.startsWith(prefix)) {
-          const num = parseInt(req.request_id.slice(prefix.length + 1));
-          if (num > maxNumber) maxNumber = num;
-        }
-      });
-      return prefix + "-" + String(maxNumber + 1).padStart(3, "0");
+    function generateRequestId(documentType) {
+      const documentCode = // Get all first letters of each word in document type as capital
+        documentType.split(" ").map(word => word.charAt(0).toUpperCase()).join("");
+      // document type code + random 10 random alpha
+      const prefix = documentCode + Math.random().toString(36).substring(2, 12); 
+      // random 3 numeric value
+      const randomNum = Math.floor(Math.random() * 900) + 100; // Generate a random 3-digit number (100-999)
+      return prefix + "-" + randomNum;
     }
 
     // Collect form values
@@ -130,15 +126,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Build timeline steps
     const timeline = [
       { step: "Request Submitted", date: dateRequested, status: "Completed" },
-      { step: "Initial Review", date: null, status: "Pending" },
-      { step: "Document Verification", date: null, status: "Pending" },
-      { step: "Final Approval", date: null, status: "Pending" },
-      { step: "Ready for Pickup", date: null, status: "Pending" },
+      { step: "Initial Review", date: null, status: "Pending" }
     ];
 
     // New request object
     const newRequest = {
-      request_id: generateRequestId(),
+      request_id: generateRequestId(documentType),
       status: "Pending",
       document: documentType,
       applicant: {
@@ -149,17 +142,32 @@ document.addEventListener("DOMContentLoaded", async () => {
       purpose: purpose,
       date_requested: dateRequested,
       expected_completion: expectedCompletion,
-      timeline: timeline,
+      timeline: timeline || [],
     };
 
-    // Add new request and save back to sessionStorage
-    documents.push(newRequest);
-    sessionStorage.setItem("documents", JSON.stringify(documents));
-
-    alert("Your document request has been submitted!");
-
-    // Optionally reset the form
-    form.reset();
+    fetch('http://localhost:3000/api/document-requests', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newRequest)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Failed to submit document request");
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log("Document request submitted:", data);
+      alert("Your document request has been submitted with request ID: " + newRequest.request_id);
+      // Optionally reset the form
+      form.reset();
+    })
+    .catch(error => {
+      console.error("Error submitting document request:", error);
+      alert("Error submitting document request. Please try again.");
+    });
   });
 
   // remove red border on input once user types

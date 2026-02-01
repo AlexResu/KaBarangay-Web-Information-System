@@ -35,27 +35,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!query) return;
 
     try {
-      // --- Fetch document requests data from JSON file ---
-      const response = await fetch(`${base}/data/document-request.json`);
+      // --- Fetch document requests data from API ---
+      const response = await fetch(`http://localhost:3000/api/document-requests/${query}`);
       const data = await response.json();
-      const match = data.documents.find((doc) => {
-        return (
-          doc.request_id.toLowerCase() === query ||
-          doc.applicant.name.toLowerCase().includes(query) ||
-          doc.applicant.email.toLowerCase() === query
-        );
-      });
-
-      // --- If match found, render details; else show message ---
-      if (match) {
-        renderDetails(match);
-        detailsSection.hidden = false;
-      } else {
-        detailsSection.innerHTML = `<p>No results found for "${query}"</p>`;
-        detailsSection.hidden = false;
-      }
+      renderDetails(data);
+      detailsSection.hidden = false;
     } catch (err) {
       console.error("Error loading data:", err);
+      detailsSection.innerHTML = `<p>No results found for "${query}"</p>`;
+      detailsSection.hidden = false;
     }
   });
 });

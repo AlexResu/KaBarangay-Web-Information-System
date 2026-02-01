@@ -1,5 +1,32 @@
 {
   "dependencies": {
-    "mongodb": "^7.0.0"
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "mongodb": "^7.0.0",
+    "mongoose": "^9.1.5"
+  },
+  "name": "kabarangay-web-information-system",
+  "version": "1.0.0",
+  "description": "A static website providing barangay-level services and community information. Residents can view announcements, access a directory of local officials, submit service requests, and track requests.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:api": "npx nodemon api/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexResu/KaBarangay-Web-Information-System.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/AlexResu/KaBarangay-Web-Information-System/issues"
+  },
+  "homepage": "https://github.com/AlexResu/KaBarangay-Web-Information-System#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.11"
   }
 }

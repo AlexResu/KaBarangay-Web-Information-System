@@ -15,21 +15,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   await initLoginModal();
   let officials = [];
-  const storedData = sessionStorage.getItem("officials");
-  if (!storedData) {
-    fetch(`${base}/data/officials.json`)
-      .then((response) => response.json())
-      .then((data) => {
-        officials = data.officials;
-        renderDirectory();
-      })
-      .catch((error) => {
-        console.error("Error loading officials:", error);
-      });
-  } else {
-    officials = JSON.parse(storedData);
+  fetch("http://localhost:3000/api/officials?is_deleted=false")
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error("Failed to fetch officials");
+    }
+    return response.json();
+  })
+  .then((data) => {
+    officials = data;
     renderDirectory();
-  }
+  })
+  .catch((error) => {
+    console.error("Error loading officials:", error);
+  });
+
 
   function renderDirectory() {
     const tbody = document.querySelector(".directory-table tbody");
