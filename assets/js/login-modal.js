@@ -53,20 +53,41 @@ export const initLoginModal = () => {
       const username = document.getElementById("modalUsername").value.trim();
       const password = document.getElementById("modalPassword").value.trim();
 
-      // --- Authentication Logic (Temporary Demo Credentials) ---
-      if (username === "admin" && password === "1234") {
-        // SUCCESS: Save login session and redirect to dashboard
-        sessionStorage.setItem("loginTime", new Date().toISOString());
-        sessionStorage.setItem("isLoggedIn", "true");
-        window.location.href = "admin-dashboard.html";
-      } else {
-        // FAILURE: Show alert and inline error message
-        alert("Invalid username or password.");
-        if (errorMsg) {
-          errorMsg.textContent = "Invalid username or password.";
-          errorMsg.style.display = "block";
+      // --- Authentication Logic through API ---
+    // POST login API call
+    fetch(`http://localhost:3000/api/admins/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
         }
-      }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data)
+        if (data.success) {
+          // SUCCESS: Save login session and redirect to dashboard
+          sessionStorage.setItem("loginTime", new Date().toISOString());
+          sessionStorage.setItem("isLoggedIn", "true");
+          window.location.href = "admin-dashboard.html";
+        } else {
+          // FAILURE: Show alert and inline error message
+          alert("Invalid username or password.");
+          if (errorMsg) {
+            errorMsg.textContent = "Invalid username or password.";
+            errorMsg.style.display = "block";
+          }
+        }
+      })
+      .catch((error) => {
+        console.error("Error during login fetch:", error);
+        alert("An error occurred during login. Please try again later.");
+      });
     });
   }
 

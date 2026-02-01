@@ -3,14 +3,14 @@
  *  ADMIN ANNOUNCEMENTS DASHBOARD SCRIPT
  * ---------------------------------------------------------------
  *  Handles CRUD operations for announcements (Add, Edit, Delete, Hide)
- *  within the KaBarangay Admin Dashboard.
+ *  within the KaBarangay Admin Dashboard using direct API calls.
  *
  *  Features:
  *  - Dynamic rendering of announcements
+ *  - API-based CRUD operations (localhost:3000/api/announcements)
  *  - Edit and delete capabilities
  *  - Hide/Unhide functionality
- *  - Session persistence using sessionStorage
- *  - Data fetching from a local JSON file (for initial load)
+ *  - Real-time database persistence
  *  - Modular imports for authentication and reusable partials
  * ==============================================================
  */
@@ -20,17 +20,9 @@ import { protectPage, initLogout } from "./auth.js"; // Authentication and logou
 // Wait until all DOM elements are fully loaded before executing
 document.addEventListener("DOMContentLoaded", async () => {
   // ==============================================================
-  // BASE PATH DETECTION
+  // API CONFIGURATION
   // ---------------------------------------------------------------
-  // Automatically detects whether the current path includes "kabarangay-website"
-  // This is useful for relative paths when hosting in subdirectories.
-  // ==============================================================
-  const base = window.location.pathname.includes("kabarangay-website")
-    ? "/kabarangay-website"
-    : "";
-
-  // ==============================================================
-  // PAGE PROTECTION
+  const API_URL = "http://localhost:3000/api/announcements";
   // ---------------------------------------------------------------
   // Prevents unauthorized users from accessing this admin page.
   // If protectPage() returns false, stop further script execution.
@@ -57,12 +49,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ---------------------------------------------------------------
   // announcementsData: stores all announcements
   // isEditMode: indicates if form is currently editing an existing entry
-  // currentEditIndex: holds index of the announcement being edited
+  // currentEditId: holds MongoDB _id of the announcement being edited
   // priorityOrder: defines sorting order for high → low
   // ==============================================================
   let announcementsData = [];
   let isEditMode = false;
-  let currentEditIndex = null;
+  let currentEditId = null;
 
   const priorityOrder = {
     high: 3,
@@ -84,11 +76,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ==============================================================
   // FORM SUBMISSION HANDLER
   // ---------------------------------------------------------------
-  // Handles both "Add" and "Edit" functionality.
-  // Validates inputs, updates announcementsData, resets form, and re-renders.
+  // Handles both "Add" and "Edit" functionality via API.
+  // Validates inputs, communicates with database, and re-renders.
   // ==============================================================
   if (form) {
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       // Get input values
@@ -96,48 +88,76 @@ document.addEventListener("DOMContentLoaded", async () => {
       const contentInput = form.querySelector("#content");
       const prioritySelect = form.querySelector("#priority");
 
-      // Create new announcement object
-      const newAnnouncement = {
+      // Create announcement object
+      const announcementData = {
         title: titleInput.value.trim(),
         description: contentInput.value.trim(),
         priority: prioritySelect.value.toLowerCase(),
-        date: new Date().toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        }),
-        is_hidden: false, // Default: visible
+        is_hidden: false,
       };
 
       // Validation: Ensure all required fields are filled
-      if (!newAnnouncement.title || !newAnnouncement.description) {
+      if (!announcementData.title || !announcementData.description) {
         alert("Please fill in all required fields.");
         return;
       }
 
-      // EDIT MODE: Update existing announcement
-      if (isEditMode && currentEditIndex !== null) {
-        // Update existing announcement
-        const existing = announcementsData[currentEditIndex];
-        newAnnouncement.is_hidden = existing.is_hidden; // retain hidden state
-        announcementsData[currentEditIndex] = newAnnouncement;
-      } else {
-        // ADD MODE: Append new announcement to the array
-        announcementsData.push(newAnnouncement);
+      try {
+        // EDIT MODE: Update existing announcement via API
+        if (isEditMode && currentEditId !== null) {
+          // Find existing announcement to retain hidden status
+          const existing = announcementsData.find(
+            (ann) => ann._id === currentEditId
+          );
+          announcementData.is_hidden = existing.is_hidden;
+
+          const response = await fetch(`${API_URL}/${currentEditId}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(announcementData),
+          });
+
+          if (!response.ok){
+            alert("Failed to update announcement");
+          } else {
+            alert("Announcement updated successfully")
+          };
+        } else {
+          // ADD MODE: Create new announcement via API
+          const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(announcementData),
+          });
+
+          if (!response.ok){
+            alert("Failed to create announcement");
+          } else {
+            alert("Announcement created successfully")
+          };
+        }
+
+        // Reset form and state
+        titleInput.value = "";
+        contentInput.value = "";
+        prioritySelect.value = "medium";
+
+        isEditMode = false;
+        currentEditId = null;
+
+        formHeader.textContent = "➕ Add New Announcement";
+        submitBtn.textContent = "+ Add";
+
+        // Fetch updated data and re-render
+        await fetchAnnouncements();
+      } catch (error) {
+        console.error("Error submitting announcement:", error);
+        alert("Failed to save announcement. Please try again.");
       }
-
-      // Reset form and state
-      titleInput.value = "";
-      contentInput.value = "";
-      prioritySelect.value = "medium";
-
-      isEditMode = false;
-      currentEditIndex = null;
-
-      formHeader.textContent = "➕ Add New Announcement";
-      submitBtn.textContent = "+ Add";
-
-      renderAnnouncements();
     });
   }
 
@@ -149,17 +169,39 @@ document.addEventListener("DOMContentLoaded", async () => {
   const container = document.getElementById("announcement-list");
 
   // ==============================================================
+  // FETCH ANNOUNCEMENTS FROM API
+  // ---------------------------------------------------------------
+  // Retrieves all announcements from the database
+  // ==============================================================
+  async function fetchAnnouncements() {
+    try {
+      const response = await fetch(API_URL, {
+        headers: {
+          "X-Admin": "true" // Indicate admin access to fetch all announcements
+        }
+      });
+      if (!response.ok) throw new Error("Failed to fetch announcements");
+      announcementsData = await response.json();
+      renderAnnouncements();
+    } catch (error) {
+      console.error("Error fetching announcements:", error);
+      alert("Failed to load announcements. Please refresh the page.");
+    }
+  }
+
+  // ==============================================================
   // RENDER FUNCTION
   // ---------------------------------------------------------------
-  // Clears and re-renders the announcement list.
+  // Clears and re-renders the announcement list from database data.
   // Sorts announcements by date (newest first), then by priority.
-  // Updates sessionStorage for persistence between reloads.
   // ==============================================================
   function renderAnnouncements() {
     container.innerHTML = "";
 
+    const announcements = announcementsData;
+
     // Sort by date, then by priority
-    const sortedAnnouncements = announcementsData.sort((a, b) => {
+    const sortedAnnouncements = announcements.sort((a, b) => {
       const dateA = new Date(a.date);
       const dateB = new Date(b.date);
 
@@ -169,14 +211,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       return priorityOrder[b.priority] - priorityOrder[a.priority];
     });
 
-    // Save current data state to sessionStorage
-    sessionStorage.setItem(
-      "sortedAnnouncements",
-      JSON.stringify(sortedAnnouncements)
-    );
-
     // Generate a card for each announcement
-    sortedAnnouncements.forEach((item, index) => {
+    sortedAnnouncements.forEach((item) => {
       const card = document.createElement("div");
       card.className = "announcement-card";
 
@@ -205,23 +241,50 @@ document.addEventListener("DOMContentLoaded", async () => {
       `;
 
       // Toggle hide
-      card.querySelector(".btn.view").addEventListener("click", () => {
-        item.is_hidden = !item.is_hidden;
-        renderAnnouncements();
+      card.querySelector(".btn.view").addEventListener("click", async () => {
+        try {
+          const updatedData = {
+            is_hidden: !item.is_hidden,
+          };
+          const response = await fetch(`${API_URL}/${item._id}/toggle-hidden`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatedData),
+          });
+
+          if (!response.ok) throw new Error("Failed to toggle announcement");
+
+          await fetchAnnouncements();
+        } catch (error) {
+          console.error("Error toggling hide:", error);
+          alert("Failed to update announcement. Please try again.");
+        }
       });
 
       // Delete
-      card.querySelector(".btn.delete").addEventListener("click", () => {
-        if (confirm(`Delete ${item.title}?`)) {
-          announcementsData.splice(index, 1); // Remove from data array
-          renderAnnouncements(); // Re-render
+      card.querySelector(".btn.delete").addEventListener("click", async () => {
+        if (confirm(`Delete "${item.title}"?`)) {
+          try {
+            const response = await fetch(`${API_URL}/${item._id}`, {
+              method: "DELETE",
+            });
+
+            if (!response.ok) throw new Error("Failed to delete announcement");
+
+            await fetchAnnouncements();
+          } catch (error) {
+            console.error("Error deleting announcement:", error);
+            alert("Failed to delete announcement. Please try again.");
+          }
         }
       });
 
       // Edit
       card.querySelector(".btn.edit").addEventListener("click", () => {
         isEditMode = true;
-        currentEditIndex = index;
+        currentEditId = item._id;
 
         // Populate form with existing data
         form.querySelector("#title").value = item.title;
@@ -244,29 +307,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ==============================================================
   // INITIAL DATA LOAD
   // ---------------------------------------------------------------
-  // 1. Checks if announcements are already stored in sessionStorage
-  //    (keeps user’s data after refresh)
-  // 2. If not found, fetches from local JSON file (/data/announcements.json)
+  // Fetches all announcements from the database on page load
   // ==============================================================
-  const storedData = sessionStorage.getItem("sortedAnnouncements");
-  if (!storedData) {
-    fetch(`${base}/data/announcements.json`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to load announcement data");
-        }
-        return response.json();
-      })
-      .then((announcements) => {
-        announcementsData = announcements.data;
-        renderAnnouncements();
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  } else {
-    // Load announcements from sessionStorage
-    announcementsData = JSON.parse(storedData);
-    renderAnnouncements();
-  }
+  fetchAnnouncements();
 });
