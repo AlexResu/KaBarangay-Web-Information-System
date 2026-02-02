@@ -1,79 +1,99 @@
 # Kabarangay Web Information System
 
-A static website providing barangay-level services and community information. Residents can view announcements, access a directory of local officials, submit service requests, and track requests.
+The KaBarangay Web Information System is a full-stack platform designed to provide streamlined barangay-level services and community information. Residents can stay informed through real-time announcements, access a digital directory of local officials, and submit or track service requests through a secure, database-driven system.
 
 ## Features
 
-- News and announcements
-- Directory of barangay officials
-- Service request and tracking forms
-- Frequently asked questions
-- Admin dashboard and sections for administrative management
+- Dynamic News & Announcements: Real-time updates with priority levels and visibility controls.
+- Barangay Officials Directory: A searchable database of local leaders and their key responsibilities.
+- Service Request & Tracking: Residents can submit document requests online and monitor their status via a real-time progress timeline.
+- Admin Dashboard: A secure management suite for administrators to handle records, announcements, and document approvals.
+- Staff Authentication: Secure login for authorized personnel with role-based access control.
 
 ## Project Structure
 
-- `index.html`: Homepage and main entry point
-- `announcements.html`: Barangay news and updates
-- `directory.html`: Directory of officials
-- `services.html`: Overview of available services
-- `contact.html`: Barangay contact information
-- `faq.html`: Frequently asked questions
-- `track-request.html`: Track your service requests
-- `document-request.html`: Submit document requests
-- `home.html`: Main content landing page
-- `admin-header.html`: Header for admin pages
-- **Admin sections:**
-  - `admin-dashboard.html`: Admin dashboard for announcement management
-  - `admin-documents.html`: Admin interface for handling documents
-  - `admin-officials.html`: Admin management for barangay officials
-- `assets/css/`: Modular CSS files for styling each section
-- `assets/js/`: JavaScript for dynamic content and loading partials
-- `data/`: Static JSON files for announcements and officials
-- `partials/`: Reusable HTML snippets (header, footer, request form, etc.)
+- **Back-end and Database sections:**
+- `api/`: Backend logic including Express routes and Mongoose CRUD operations.
+  - `admins/, announcements/, document-request/, officials/`: Domain-specific API folders.
+- `assets/`: 
+  - `css/`: Modular stylesheets for individual components (e.g., admin-dashboard.css, timeline.css).
+  - `js/`: Dynamic logic for frontend interactions, API fetching, and partials loading.
+- `data/`: JSON templates used for initial database seeding (Announcements, Officials, Requests).
+- `partials/`: Reusable HTML snippets for headers, footers, and common layout elements.
+- `server.js`: Main entry point for the Node.js/Express backend.
+
+
+## Tech Stack
+
+- **Frontend:** HTML5, CSS3, JavaScript (ES6+), Bootstrap 5 (via CDN).
+- **Backend:** Node.js, Express.js.
+- **Database:** MongoDB Atlas (NoSQL).
+- **Security:** Bcrypt (Password Hashing), JWT (Authentication), Helmet.js (HTTP Security).
+- **Tools:** Postman (API Testing), AWS S3 (Future File Storage).
+
+
+## API & Database Overview
+
+The system transitions from static JSON to a MongoDB Atlas backend
+- **Collections:** `announcements`, `officials`, `document-requests`, and `admins`.
+- **CRUD Integration:** Admins can Create, Read, Update, and Delete records directly from the dashboard, while residents interact with public-facing Read and Create endpoints.
+- **Tracking Logic:** The `document-requests` collection features a timeline array to store every step of the request's progress.
+
 
 ## Setup Instructions
 
 1. **Clone the repository:**
-git clone https://alexresu.github.io/KaBarangay-Web-Information-System/
+`git clone https://github.com/AlexResu/KaBarangay-Web-Information-System.git`
+2. **Install Dependencies:** `npm install`
+3. **Configure Environment Variables::** Create a `.env` file and add your `MONGODB_URI` and `PORT`.
+4. **Run the Server::** `node server.js` or `npm start`
+5. **Access the App::** Open `http://localhost:3000` in your browser.
 
-2. **Recommended:** Use the VS Code Live Server Extension  
-- Open the project folder in VS Code  
-- Right-click `index.html` and select “Open with Live Server”
-- Or, open HTML files directly in your browser
 
-## Bootstrap via CDN
 
-This project uses Bootstrap for responsive design by loading CSS and JS files from a Content Delivery Network (CDN). This ensures faster load times and always up-to-date files, without the need to store Bootstrap assets locally.
+## Project Documentation
+
+| Document Type | Link / Reference |
+|------------|-------------|
+| **Project Requirements Document** | https://drive.google.com/open?id=1PW6AWgvafYbLoe7B3cDd_KDrkKzLPtdMV_ukMP51NKw&usp=drive_copy |
+| **Database Plan Worksheet** | https://docs.google.com/document/d/1LHA8q5p1KvyDC0z9EemwZoFmQQizEn9172CeQTCF6XE/edit?usp=sharing |
+| **Unified API Integration Plan** | https://docs.google.com/spreadsheets/d/1R3_IBYNSae-m5iHVllGbr0AkPnT-CsUONAOk8iAsWls/edit?usp=sharing |
+| **Project Roadmap/ Plan** | https://docs.google.com/spreadsheets/d/1SL-W0upeWfAPKhvz-eZLKp3KOaL1CJoQVWYsKM8hANg/edit?usp=sharing |
+| **Postman Testing Results (Screenshots)** | https://drive.google.com/drive/folders/1i9zssVEqJaHgSgjV0-wz7NqIHUWQhm8y?usp=sharing |
+| **Postman Testing Results (JSON file)** | https://drive.google.com/drive/folders/1Z2MDppmzb-as-inzalLGvIhsmVsMIRTW?usp=sharing |
+| **GitHub repository** | https://github.com/AlexResu/KaBarangay-Web-Information-System  |
+| **GitHub pages** | https://alexresu.github.io/KaBarangay-Web-Information-System/ |
+
+
+
+## API Integration Summary
+
+- **Public Features:** Residents can use `GET /api/announcements` to see active news and `GET /api/document-requests/search` to track their specific request ID.
+- **Admin Management:** Staff can use `POST /api/announcements` to create news and `PATCH /api/document-requests/:id/status` to trigger an automatic timeline update for residents.
+- **Data Structure:** All data is persisted in **MongoDB Atlas**, with collections for `announcements`, `officials`, `document-requests`, and `admins`.
+
+
+## API Integration Summary
+
+
+- **Mongoose Models:** Backend routes utilize `findByIdAndUpdate()` and `deleteOne()` for data persistence.
+- **Security:** Admin routes are protected via a `POST /api/admins` login flow that verifies credentials against stored password hashes.
+- **Tracking System:** The Document Request System uses a `timeline` array to store progress steps such as "Submitted," "Processing," and "Ready for Pickup".
+
+
+
 
 ## Developer Documentation
 
-### Workflow & Collaboration
+- **Branching Strategy:** Use `feature/` for new tools and `bugfix/` for repairs.
+- **Soft Deletion:** For officials, use is_deleted: true rather than a permanent delete to preserve historical records.
+- **Validation:** Use server-side validation for all POST/PATCH requests to ensure data integrity.
 
-- **Branching:**  
-  Create a new branch for each feature or bugfix (e.g., `feature/admin-dashboard`, `bugfix/request-tracking`).
 
-- **Commits:**  
-  Use clear and descriptive commit messages referencing what was changed.
+## Developer
 
-- **Pull Requests:**  
-  Open a pull request for each new feature or fix. Assign teammates for code review.
-
-- **Testing:**  
-  Test all new and changed functionality in both user and admin sections before merging.
-
-- **Code Style:**  
-  Keep HTML, CSS, and JS modular and organized. Use comments in code for complex logic. Place shared elements in `partials/` for reusability.
-
-### Editing Content and Admin Pages
-
-- To update announcements or officials, edit the relevant JSON in `data/`.
-- Modify admin layouts in their respective `admin-*` HTML files.
-- For reusable navigation, footer, or forms, update the related partial in `partials/` and verify JavaScript loads them correctly.
-- Always check your changes in the browser before submitting or merging.
-
-### Notes for Future Developers
-
-- Consistently use Bootstrap classes for layout and interface elements.
-- Structure JavaScript in small, maintainable functions with meaningful names.
-- Keep CDN links up-to-date with the latest Bootstrap version as needed.
-- Refer to this README for onboarding, workflow steps, and project file structure.
+- Developer: Alex Resurreccion
+- Institution: Mapúa Malayan Digital College (MMDC)
+- Program: BS Information Technology Major in Software Development
+  
+---
