@@ -21,8 +21,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   await initLoginModal();
 
   // Other scripts for track request page
-  const base = window.location.pathname.includes("kabarangay-website")
-    ? "/kabarangay-website"
+  const base = window.location.pathname.includes("KaBarangay-Web-Information-System")
+    ? "/KaBarangay-Web-Information-System"
     : "";
   const form = document.getElementById("searchForm");
   const input = document.getElementById("trackSearch");
