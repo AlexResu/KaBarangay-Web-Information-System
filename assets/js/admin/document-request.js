@@ -2,8 +2,8 @@ import { loadPartials } from "../partials.js";
 import { protectPage, initLogout } from "./auth.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const base = window.location.pathname.includes("kabarangay-website")
-    ? "/kabarangay-website"
+  const base = window.location.pathname.includes("KaBarangay-Web-Information-System")
+    ? "/KaBarangay-Web-Information-System"
     : "";
 
   // Protect page: only allow access if user is authenticated
