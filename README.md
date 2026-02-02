@@ -34,7 +34,7 @@ A static website providing barangay-level services and community information. Re
 ## Setup Instructions
 
 1. **Clone the repository:**
-git clone https://github.com/charlespogi123-cyber/kabarangay-website.git
+git clone https://alexresu.github.io/KaBarangay-Web-Information-System/
 
 2. **Recommended:** Use the VS Code Live Server Extension  
 - Open the project folder in VS Code  

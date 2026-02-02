@@ -8,8 +8,8 @@
 // Used across all public pages of the KaBarangay website.
 // =============================================================
 export const initHeader = async () => {
-  const base = window.location.pathname.includes("kabarangay-website")
-    ? "/kabarangay-website"
+  const base = window.location.pathname.includes("KaBarangay-Web-Information-System")
+    ? "/KaBarangay-Web-Information-System"
     : "";
 
   try {

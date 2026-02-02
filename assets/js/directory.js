@@ -3,8 +3,8 @@ import { loadPartials } from "./partials.js";
 import { initLoginModal } from "./login-modal.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const base = window.location.pathname.includes("kabarangay-website")
-    ? "/kabarangay-website"
+  const base = window.location.pathname.includes("KaBarangay-Web-Information-System")
+    ? "/KaBarangay-Web-Information-System"
     : "";
 
   // Load partials first

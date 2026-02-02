@@ -21,8 +21,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   await initLoginModal();
 
   // Determine base URL (adjusted for GitHub Pages or local file paths)
-  const base = window.location.pathname.includes("kabarangay-website")
-    ? "/kabarangay-website"
+  const base = window.location.pathname.includes("KaBarangay-Web-Information-System")
+    ? "/KaBarangay-Web-Information-System"
     : "";
 
   // Other scripts for services page

@@ -62,12 +62,10 @@ export async function updateAnnouncement(id, updateData) {
       { $set: updateData }
     );
 
-    alert("Announcement updated successfully.");
     console.log("Announcement updated:", result.modifiedCount, "document(s) modified");
     return result;
   } catch (err) {
     console.error("Error updating announcement:", err);
-    alert("Error updating announcement. Please try again.");
     throw err;
   }
 }
